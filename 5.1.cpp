@@ -19,19 +19,20 @@ int parity (unsigned int num){
     	cout << binary << endl;
     	
     	
-		parity ^= (parity & 1); 
-
-		cout << "Parity is :" << parity << endl;
-
+		parity ^= (num & 1); 
 		num >>= 1;
 	}
 	return parity;
 
 }
 
+/*
+
+*/
+
 int main(){
 
-	cout << parity(37) << endl;
+	cout << parity(36) << endl;
 
 	return 0;
 }
