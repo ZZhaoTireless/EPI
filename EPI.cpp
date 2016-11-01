@@ -135,11 +135,13 @@ int swapByMask( unsigned long num, int i, int j){
 }
 
 
+/******* 5.7 Exponentiation Problem *******/
+
 
 
 int main(){
 
-	cout << swapBruteForce(137, 3, 10) << endl;
+	//cout << exp(6,3) << endl;
 
 	return 0;
 }
