@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <bitset>
+#include <time.h>
 
 using namespace std;
 
@@ -143,23 +144,64 @@ Calculate x^y where x is double y is integer
 Follow the bit of y to recursively calculate.
 */
 
-double exponentiation(double x, unsigned int y){
+double expoRecursion(double x, int y){
+
+	/* Consider that y could be negative number*/
+
+	if( y < 0) {
+		y = - y;
+		x = 1.0 / x;
+	}
 
 	if (y && (y % 2)){
-		return x * exponentiation(x, y - 1);
+		return x * expoRecursion(x, y - 1);
 	} 
 
 	if(y && !(y % 2)){
-		return exponentiation(x, y >> 1) * exponentiation(x, y >> 1);
+		return expoRecursion(x, y >> 1) * expoRecursion(x, y >> 1);
 	}
 
 	return 1;
 
 }
 
+/*
+Now consider loop version for problem
+*/
+
+double expoLoop(double x, int y){
+
+	if(y < 0){
+		y = -y;
+		x = 1.0 / x;
+	}
+
+	double ans = 1.0;
+
+	while (y){
+
+		/* 
+		if the most right is set bit then multiply
+		current x value once more */
+		if( y & 0x1){
+			ans *= x;
+		}
+
+		/* 
+		Each time y = y / (2 ^ n) ->
+		x = x ^ [y  * (2 ^ n)]
+		looping until y = 1
+		*/
+		x *= x;
+		y = y >> 1;	
+	}
+
+	return ans;
+}
+
 int main(){
 
-	cout << exponentiation(6,3) << endl;
+	cout << expoRecursion(2,237) << endl;
 
 	return 0;
 }
