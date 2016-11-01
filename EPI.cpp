@@ -199,9 +199,77 @@ double expoLoop(double x, int y){
 	return ans;
 }
 
+/******* 5.8 Reverse Integer Problem *******/
+
+/*
+Reverse the input integer
+
+Brute-force: loop with 10X for each digit
+*/
+
+int revIntBruteForce(int n){
+
+	int numPos = 1;
+	int prePos = 1;
+	int ans = 0;
+
+	bool negative = n < 0;
+
+	n = negative ? -n : n;
+
+	while(numPos <= n){
+
+		ans *= 10;
+
+		numPos *= 10;
+
+		prePos = numPos / 10;
+
+		ans += (n % numPos) / prePos ;
+	}
+
+	return negative ? -ans : ans;
+}
+
+/*
+A better approch
+*/
+
+int revIntImprove(int n){
+
+	int ans = 0;
+
+	bool negative = n < 0;
+
+	n = negative ? -n : n;
+
+	while(n){
+
+		ans = ans * 10 + n % 10;
+
+		n /= 10;
+
+	}
+
+	return negative ? -ans : ans;
+}
+
+
 int main(){
 
-	cout << expoRecursion(2,237) << endl;
+	cout << revIntBruteForce(123189) << endl;
 
 	return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
