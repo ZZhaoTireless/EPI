@@ -1,7 +1,9 @@
 #include <iostream>
 #include <string>
+
 #include <bitset>
 #include <time.h>
+#include <limits>
 
 using namespace std;
 
@@ -254,10 +256,48 @@ int revIntImprove(int n){
 	return negative ? -ans : ans;
 }
 
+/******* 5.3 Reverse bits Problem *******/
+
+/*
+Brute force through the way in 5.2
+*/
+
+unsigned long revBits(unsigned long num){
+
+	int len = sizeof(num) * 4;
+
+	cout << len << endl;
+
+	for(int i = 0; i < len / 2; i++){
+
+		if (((num >> i) & 0x1) != ((num >> (len - i - 1)) & 0x1)){
+
+			unsigned long long int mask = (1L << i) | (1L << (len - i - 1));
+
+			num ^= mask;
+		}	
+	}
+
+	return num;
+}
+
+/*
+
+Another better way, similar as problem 5.2, we could use
+a table to save the reverse like 16 bits as the key, and
+the responding value is it's reverse.
+
+The running time complexity would be O(n/L) where L is 
+the length of the key.
+
+The space complexity would be O(L * 2^(L + 1)) as worst case
+
+*/
+
 
 int main(){
 
-	cout << revIntBruteForce(123189) << endl;
+	cout << revBits(4294967292) << endl;
 
 	return 0;
 }
