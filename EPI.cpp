@@ -137,11 +137,29 @@ int swapByMask( unsigned long num, int i, int j){
 
 /******* 5.7 Exponentiation Problem *******/
 
+/*
+Calculate x^y where x is double y is integer
 
+Follow the bit of y to recursively calculate.
+*/
+
+double exponentiation(double x, unsigned int y){
+
+	if (y && (y % 2)){
+		return x * exponentiation(x, y - 1);
+	} 
+
+	if(y && !(y % 2)){
+		return exponentiation(x, y >> 1) * exponentiation(x, y >> 1);
+	}
+
+	return 1;
+
+}
 
 int main(){
 
-	//cout << exp(6,3) << endl;
+	cout << exponentiation(6,3) << endl;
 
 	return 0;
 }
