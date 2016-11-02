@@ -4,6 +4,7 @@
 #include <bitset>
 #include <time.h>
 #include <limits>
+#include <math.h>
 
 using namespace std;
 
@@ -264,7 +265,7 @@ Brute force through the way in 5.2
 
 unsigned long revBits(unsigned long num){
 
-	int len = sizeof(num) * 4;
+	int len = (sizeof num) * 4;
 
 	cout << len << endl;
 
@@ -272,7 +273,7 @@ unsigned long revBits(unsigned long num){
 
 		if (((num >> i) & 0x1) != ((num >> (len - i - 1)) & 0x1)){
 
-			unsigned long long int mask = (1L << i) | (1L << (len - i - 1));
+			unsigned long mask = (1L << i) | (1L << (len - i - 1));
 
 			num ^= mask;
 		}	
@@ -295,9 +296,71 @@ The space complexity would be O(L * 2^(L + 1)) as worst case
 */
 
 
+/******* 5.9 Check Palindrome Problem *******/
+
+/*
+The rmethod in 5.8 for reverse digits would be useful
+
+It may have same time complexsity of worst case as optimal
+method, but the average time complexsity is not optimal
+*/
+
+int checkPalindrome(long num){
+
+	if(num < 0) return 0;
+
+	long rev = 0;
+	long orig = num;
+
+	while(num){
+
+		rev = rev * 10 + num % 10;
+
+		num /= 10;
+	}
+
+	return rev == orig ? 1 : 0;
+}
+
+/* 
+There is a better way. 
+
+When check failed, stop running immediately.
+
+Note: the length of most significant digit would
+be given by floor(log10(X)) + 1.
+*/
+
+int checkPalindromeImprove(long num){
+
+	if(num < 0) return 0;
+
+	int maskLength = floor(log10(num)) + 1;
+
+	int numMask = pow(10, maskLength - 1);
+
+	while(num){
+
+		int tail = num % 10;
+
+		int head =  num / numMask;
+
+		if(tail != head) return 0;
+
+		/* Remove head and tail for parameter */
+		num %= numMask;
+		num /= 10;
+
+		numMask /= 100;
+	}
+
+	return 1;
+
+} 
+
 int main(){
 
-	cout << revBits(4294967292) << endl;
+	cout << checkPalindromeImprove(123321) << endl;
 
 	return 0;
 }
