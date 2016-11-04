@@ -8,6 +8,8 @@
 
 using namespace std;
 
+/* Chapter 5 Primary Type */
+
 /******* 5.1 Parity Problem *******/
 
 /* The odd number of set bit returns 1, else return 0 */
@@ -358,9 +360,77 @@ int checkPalindromeImprove(long num){
 
 } 
 
+/******* 5.11 Rectangle Intersection Problem *******/
+
+/*
+If the rectrangle is formed by lowest width and height,
+and we has width and height as well. We have O(1) time to check
+if two rectangle has intersection and what the rectangle that 
+such intersection formed.
+*/
+
+typedef struct rec {
+	int x, y, width, height;
+
+	rec(int x, int y, int width, int height): x(x),y(y),width(width),height(height){
+		/*cout << "rectangle created" << endl;*/
+	}
+} Rectangle;
+
+int isIntersection(Rectangle & R1, Rectangle & R2){
+	return R1.x <= R2.x + R2.x + R2.width &&
+		   R1.y <= R2.y + R2.y + R2.height &&
+		   R2.x <= R1.x + R1.x + R1.width &&
+		   R2.y <= R2.y + R2.y + R2.height;
+}
+
+Rectangle intersectionRec(Rectangle &R1, Rectangle &R2){
+
+	if(isIntersection(R1, R2)){
+		Rectangle result = Rectangle(
+			max(R1.x, R2.x),
+			max(R1.y, R2.y),
+			min(R1.x + R1.width, R2.x + R2.width) - max(R1.x,R2.x),
+			min(R1.y + R1.height, R2.y + R2.height) - max(R1.y,R2.y)
+		);
+
+		return result;
+	}
+
+	return Rectangle(0,0,-1,-1);
+}
+
+void unitTestForRecItersec(void){
+
+	Rectangle R1 = Rectangle(0,0,1,1);
+	Rectangle R2 = Rectangle(1,1,2,3);
+	Rectangle R3 = Rectangle(2,0,1,3);
+
+	Rectangle res1 = intersectionRec(R1, R2); // one pix intersection
+	Rectangle res2 = intersectionRec(R2, R3); // rectangle intersection
+	Rectangle res3 = intersectionRec(R1, R3); // no intersection
+
+	cout << "R1 & R2: " <<res1.x << "," << res1.y << "," << res1.width << "," << res1.height << endl;
+	cout << "R2 & R3: " <<res2.x << "," << res2.y << "," << res2.width << "," << res2.height << endl;
+	cout << "R1 & R3: " <<res3.x << "," << res3.y << "," << res3.width << "," << res3.height << endl;
+
+}
+
+/* Chapter 6 Arrays */
+
+/*
+1.	Even tough it is easy to use O(n) space for
+	arry related quesiotn, it is better to solve
+	it without alloctating addtional storage.
+	
+2.	Take advantage for the face that you can operate 
+	efficiently on both ends.
+
+*/
+
 int main(){
 
-	cout << checkPalindromeImprove(123321) << endl;
+	unitTestForRecItersec();
 
 	return 0;
 }
