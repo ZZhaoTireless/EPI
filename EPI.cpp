@@ -432,7 +432,7 @@ int main(){
 
 	unitTestForRecItersec();
 
-	/* Change for test git */
+	/* Change for test git2 */
 
 	return 0;
 }
