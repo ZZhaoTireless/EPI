@@ -432,8 +432,6 @@ int main(){
 
 	unitTestForRecItersec();
 
-	/* Change for test git4 */
-
 	return 0;
 }
 
