@@ -426,7 +426,26 @@ void unitTestForRecItersec(void){
 2.	Take advantage for the face that you can operate 
 	efficiently on both ends.
 
+3.  When operating 2D array, use parallel logic for rows
+	and for columns.
+
 */
+
+//**** <vector> ****
+/*	Dynamic size, stored in heap.
+    
+*/
+//******************
+
+//**** <array> ****
+// Statically-size, stored in stack.
+//
+//*****************
+
+//**** <alogrithm> ****
+
+
+//*********************
 
 int main(){
 
