@@ -1,2 +1,2 @@
 # EPI
-Practices for **Element of Programming Interviews**
+C++ Skills Practices
