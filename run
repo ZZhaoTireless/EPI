@@ -1,0 +1,9 @@
+#!/bin/bash
+
+run(){
+	make > /dev/null
+	./EPI
+	rm EPI
+}
+
+run

@@ -1,12 +1,4 @@
-#include <iostream>
-#include <string>
-
-#include <bitset>
-#include <time.h>
-#include <limits>
-#include <math.h>
-
-using namespace std;
+#include "EPI.h"
 
 /* Chapter 5 Primary Type */
 
@@ -71,7 +63,7 @@ int parityDivAndConq(unsigned long long num){
 	do{
 		/*Show binary form of 'num'*/
     	std::string binary = std::bitset<64>(num).to_string();
-    	cout << binary << endl;
+    	std::cout << binary << std::endl;
 
 
 		num ^= (num >> shift);
@@ -269,7 +261,7 @@ unsigned long revBits(unsigned long num){
 
 	int len = (sizeof num) * 4;
 
-	cout << len << endl;
+	std::cout << len << std::endl;
 
 	for(int i = 0; i < len / 2; i++){
 
@@ -373,7 +365,7 @@ typedef struct rec {
 	int x, y, width, height;
 
 	rec(int x, int y, int width, int height): x(x),y(y),width(width),height(height){
-		/*cout << "rectangle created" << endl;*/
+		/*std::cout << "rectangle created" << std::endl;*/
 	}
 } Rectangle;
 
@@ -388,10 +380,10 @@ Rectangle intersectionRec(Rectangle &R1, Rectangle &R2){
 
 	if(isIntersection(R1, R2)){
 		Rectangle result = Rectangle(
-			max(R1.x, R2.x),
-			max(R1.y, R2.y),
-			min(R1.x + R1.width, R2.x + R2.width) - max(R1.x,R2.x),
-			min(R1.y + R1.height, R2.y + R2.height) - max(R1.y,R2.y)
+			std::max(R1.x, R2.x),
+			std::max(R1.y, R2.y),
+			std::min(R1.x + R1.width, R2.x + R2.width) - std::max(R1.x,R2.x),
+			std::min(R1.y + R1.height, R2.y + R2.height) - std::max(R1.y,R2.y)
 		);
 
 		return result;
@@ -410,9 +402,9 @@ void unitTestForRecItersec(void){
 	Rectangle res2 = intersectionRec(R2, R3); // rectangle intersection
 	Rectangle res3 = intersectionRec(R1, R3); // no intersection
 
-	cout << "R1 & R2: " <<res1.x << "," << res1.y << "," << res1.width << "," << res1.height << endl;
-	cout << "R2 & R3: " <<res2.x << "," << res2.y << "," << res2.width << "," << res2.height << endl;
-	cout << "R1 & R3: " <<res3.x << "," << res3.y << "," << res3.width << "," << res3.height << endl;
+	std::cout << "R1 & R2: " <<res1.x << "," << res1.y << "," << res1.width << "," << res1.height << std::endl;
+	std::cout << "R2 & R3: " <<res2.x << "," << res2.y << "," << res2.width << "," << res2.height << std::endl;
+	std::cout << "R1 & R3: " <<res3.x << "," << res3.y << "," << res3.width << "," << res3.height << std::endl;
 
 }
 
@@ -536,14 +528,31 @@ Dynamic size, stored in heap.
 
 7. rotate(A.begin(), A.begin() + shift, A.end())
 
-->	
+->	take values between A.begin() and A.begin() + shift
+	to the left of A.end()
 
+->	up to linear the distance (first, and last)
 
+->	Here is a insert sort implementation by using 
+	std::upper_bound and std::rotate
+*/
+void insert_sort(std::vector<int> & v){
+	for (auto i = v.begin(); i != v.end(); i++){
+		std::rotate(std::upper_bound(v.begin(), i, *i), i, i + 1);
+	}
+}
+/*
 *********************/
 
 int main(){
 
-	unitTestForRecItersec();
+	int array[] = {3,1,2,5,4,0};
+
+	std::vector<int> v(array, array + 6);
+
+	insert_sort(v);
+
+	std::cout << v << std::endl;
 
 	return 0;
 }
