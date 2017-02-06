@@ -11,16 +11,12 @@
 int parityBruteForce (unsigned long num){
 
 	short parity = 0;
-
 	while(num){
     	
 		parity ^= (num & 1); 
-
 		num >>= 1;
 	}
-	
 	return parity;
-
 }
 
 /* 
@@ -38,12 +34,9 @@ int parityOnlyViewSetBit(unsigned long num){
 	short parity = 0;
 
 	while (num){
-
 		parity ^= 1;
-
 		num &= (num - 1);
 	}
-
 	return parity;
 }
 
@@ -59,12 +52,10 @@ the parity of 1's and 0's for the whole number.
 int parityDivAndConq(unsigned long long num){
 
 	int shift = 32;
-
 	do{
 		/*Show binary form of 'num'*/
     	std::string binary = std::bitset<64>(num).to_string();
     	std::cout << binary << std::endl;
-
 
 		num ^= (num >> shift);
 
@@ -79,13 +70,11 @@ int parityDivAndConq(unsigned long long num){
 		num ^= num >> 4;
 		num ^= num >> 2;
 		num ^= num >> 1; */
-
 		shift >>= 1;
 
 	} while(shift);
 
 	return num & 1;
-
 }
 
 /******* 5.2 Swap Problem *******/
@@ -99,7 +88,6 @@ int swapBruteForce (unsigned long num, int i, int j){
 	if (i == j) return num;
 
 	unsigned long maskOfI = (num >> i) & 0x1;
-
 	unsigned long maskOfJ = (num >> j) & 0x1;
 
     if(maskOfI) num = num | (maskOfI << j);
@@ -109,7 +97,6 @@ int swapBruteForce (unsigned long num, int i, int j){
     else num = num & ~(0x1 << i);
 
 	return num;	
-
 }
 
 /*
@@ -124,7 +111,6 @@ when values on i and j are different.
 int swapByMask( unsigned long num, int i, int j){
 
 	if(((num >> i) & 0x1) != ((num >> j) & 0x1)){
-
 		unsigned int mask = (1L << i) | (1L << j);
 
 		num ^= mask;
@@ -144,20 +130,16 @@ Follow the bit of y to recursively calculate.
 double expoRecursion(double x, int y){
 
 	/* Consider that y could be negative number*/
-
 	if( y < 0) {
 		y = - y;
 		x = 1.0 / x;
 	}
-
 	if (y && (y % 2)){
 		return x * expoRecursion(x, y - 1);
 	} 
-
 	if(y && !(y % 2)){
 		return expoRecursion(x, y >> 1) * expoRecursion(x, y >> 1);
 	}
-
 	return 1;
 
 }
@@ -176,7 +158,6 @@ double expoLoop(double x, int y){
 	double ans = 1.0;
 
 	while (y){
-
 		/* 
 		if the most right is set bit then multiply
 		current x value once more */
@@ -192,7 +173,6 @@ double expoLoop(double x, int y){
 		x *= x;
 		y = y >> 1;	
 	}
-
 	return ans;
 }
 
@@ -215,16 +195,11 @@ int revIntBruteForce(int n){
 	n = negative ? -n : n;
 
 	while(numPos <= n){
-
 		ans *= 10;
-
 		numPos *= 10;
-
 		prePos = numPos / 10;
-
 		ans += (n % numPos) / prePos ;
 	}
-
 	return negative ? -ans : ans;
 }
 
@@ -235,19 +210,14 @@ A better approch
 int revIntImprove(int n){
 
 	int ans = 0;
-
 	bool negative = n < 0;
 
 	n = negative ? -n : n;
 
 	while(n){
-
 		ans = ans * 10 + n % 10;
-
 		n /= 10;
-
 	}
-
 	return negative ? -ans : ans;
 }
 
@@ -260,19 +230,15 @@ Brute force through the way in 5.2
 unsigned long revBits(unsigned long num){
 
 	int len = (sizeof num) * 4;
-
 	std::cout << len << std::endl;
 
 	for(int i = 0; i < len / 2; i++){
-
 		if (((num >> i) & 0x1) != ((num >> (len - i - 1)) & 0x1)){
 
 			unsigned long mask = (1L << i) | (1L << (len - i - 1));
-
 			num ^= mask;
 		}	
 	}
-
 	return num;
 }
 
@@ -307,12 +273,9 @@ int checkPalindrome(long num){
 	long orig = num;
 
 	while(num){
-
 		rev = rev * 10 + num % 10;
-
 		num /= 10;
 	}
-
 	return rev == orig ? 1 : 0;
 }
 
@@ -330,13 +293,10 @@ int checkPalindromeImprove(long num){
 	if(num < 0) return 0;
 
 	int maskLength = floor(log10(num)) + 1;
-
 	int numMask = pow(10, maskLength - 1);
 
 	while(num){
-
 		int tail = num % 10;
-
 		int head =  num / numMask;
 
 		if(tail != head) return 0;
@@ -344,7 +304,6 @@ int checkPalindromeImprove(long num){
 		/* Remove head and tail for parameter */
 		num %= numMask;
 		num /= 10;
-
 		numMask /= 100;
 	}
 
