@@ -541,8 +541,11 @@ void lambda_sort(std::vector<int> &v){
 	});
 } 
 /*
-->	The lambda function 
+->	The lambda function is a c++11 feature
+
 *********************/
+
+/******* 6.1 The Dutch National Flag Problem *******/
 
 int main(){
 
