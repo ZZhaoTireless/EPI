@@ -431,21 +431,115 @@ void unitTestForRecItersec(void){
 
 */
 
-//**** <vector> ****
-/*	Dynamic size, stored in heap.
+/***** <vector> *****
+Dynamic size, stored in heap.
     
-*/
-//******************
 
-//**** <array> ****
-// Statically-size, stored in stack.
-//
-//*****************
+*********************
 
-//**** <alogrithm> ****
+****** <array> ******
+ Statically-size, stored in stack.
+
+*********************
+
+**** <alogrithm> ****
+1. std::binary_search(A.begin(), A.end(), val, comp)
+
+->	std::sort(A.begin(), A.end(), comp) to sort the 
+	container first
+
+-> 	comp is function that compares two elements, and
+	return if the first one is 'lower' than the second one  
+-> 	Return true if find val
+
+-> 	Return false if not find val
+
+->	The container must be sorted before using. if not,
+	use if(std::find(A.begin(), A.end(), value) != A.end) instead.
+->	Performs at most log2(N) + 1
+
+	where N is the distance between begin and end
+
+2. std::lower_bound(A.begin(), A.end(), val, comp)
+   std::upper_bound(A.begin(), A.end(), val, comp)
+
+->	std::sort(A.begin(), A.end(), comp) to sort the 
+	container first
+
+-> 	comp is function that compares two elements, and
+	return if the first one is 'lower' than the second one 
+
+->	Used if there are multiple elements in the range whose 
+	value equals the value val.
+
+->	a. for lower_bound, it returns the first iterator position
+	such that the value is not less than val. i.e. *it >= val
+
+	b. for upper_bound, it returns the first iterator position
+	such that the values is larger than val. i.e. *it > val
+	
+	else return the A.end()
+
+->	Performs at most log2(N) + 1
+	where N is the distance between begin and end
+
+3. std::fill(A.begin(), A.end(), val)
+
+->	fill val from A.begin() to A.end()
+
+->	Performs linearly
+
+4. std::swap(x, y)
+
+->	swap two vals
+
+-> 	could swap to vector as well
+	e.g. vector<int> A = {3,1}, B = {3,2}, after swap(A,B)
+	A= [2,2,2] B = [1,1,1]
+
+-> 	non-array: perform constant time
+	array: linearly complexiy, swap each element in array
+
+->	std::swap(vec1, vec2) will just call vec1.swap(vec2)
+
+-> 	always use:
+
+	using std::swap;
+	swap(x, y);
+	
+	instead of std::swap(x,y) because the approach outlined
+	about ADL(Argument-dependent lookup) can find a better 
+	version.
+
+5. min_element(A.begin(), A.end(), comp)
+   max_element(A.begin(), A.end(), comp)
+
+->	don't have to be sorted
+
+->	comp is function that compares two elements, and
+	return if the first one is 'lower' than the second one
+
+->	min_element return the iterator position of minimum
+	val in the range of [A.begin, A.end)
+	
+	max_element return the iterator position of maximum
+	val in the range of [A.begin, A.end)
+
+->	Perform linearly complexity
+
+6. reverse(A.begin(), A.end())
+
+-> 	reverse array, vector
+
+-> 	perform half linearly complexity
+	iterator of swap(first, last)
+
+7. rotate(A.begin(), A.begin() + shift, A.end())
+
+->	
 
 
-//*********************
+*********************/
 
 int main(){
 
