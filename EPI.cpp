@@ -542,6 +542,9 @@ void insert_sort(std::vector<int> & v){
 	}
 }
 /*
+
+8. sort(A.begin(), A.end())
+
 *********************/
 
 int main(){
