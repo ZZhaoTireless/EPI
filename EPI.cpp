@@ -577,11 +577,12 @@ void insert_sort(std::vector<int> & v){
 */
 void lambda_sort(std::vector<int> &v){
 
-	return std::sort(v.begin(), v.end(), [](int a, int b){
+	return std::sort(v.begin(), v.end(), [](const int& a, const int& b){
 		return b < a;
 	});
 } 
 /*
+->	The lambda function 
 *********************/
 
 int main(){
