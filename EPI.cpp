@@ -543,8 +543,45 @@ void insert_sort(std::vector<int> & v){
 }
 /*
 
-8. sort(A.begin(), A.end())
+8. std::sort(A.begin(), A.end(), comp)
 
+->	Since C++ 11, the worst case of std::sort()
+	will be guarantee the worst case is O(NlogN)
+
+->	In the g++4.5, std::sort using Introsort to
+	solve the problem.
+
+	Under range[0,16], it will use insert sort, which
+	is O(N^2) complexity.
+
+	It mainly use quick-sort of median of three values,
+	which is choosing the median of [first...middle...last]
+	as the pivot. 
+	The complexity of quick-sort could be O(N^2)
+
+	So, once the recursion times for quick-sort are larger
+	than the log2(len(Array)) * 2, it will change to
+	heapsort() to ensure the overall complexity is less than
+	O(NlogN)
+
+	O(N + (N - 1) + ... + (N - log(N))) < O(NlogN) complexity for quick-sort
+	O((N - log(N)) log(N - log(N))) < O(NlogN) for heap-sort 
+
+	Thus, the overall complexity is less than 2 * O(NlogN) for the 
+	std::sort()
+
+->	comp is function that compares two elements, and
+	return if the first one is 'lower' than the second one
+
+	This comp could be a lambda, for example:
+*/
+void lambda_sort(std::vector<int> &v){
+
+	return std::sort(v.begin(), v.end(), [](int a, int b){
+		return b < a;
+	});
+} 
+/*
 *********************/
 
 int main(){
@@ -553,7 +590,7 @@ int main(){
 
 	std::vector<int> v(array, array + 6);
 
-	insert_sort(v);
+	lambda_sort(v);
 
 	std::cout << v << std::endl;
 
