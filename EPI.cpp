@@ -547,13 +547,46 @@ void lambda_sort(std::vector<int> &v){
 
 /******* 6.1 The Dutch National Flag Problem *******/
 
+/*
+
+take an array A, and index i, and rearrange
+all the element that is smaller than pivot A[i] left
+all the element that is same as A[i] middle
+all the element that is larger than A[i] right
+
+use loop two pinters
+*/
+
+void rearrange (std::vector<int> & v, int idx){
+
+	int smaller = 0, unclassified = 0, larger = v.size() - 1;
+	int pivot = v[idx];
+
+	while (unclassified < larger){
+
+		// Basic idea : smaller++ when smaller is smaller than pivot
+		//				larger-- when larger is larger than pivot
+		//				unclassified go through from left to right
+
+		if(v[unclassified] < pivot){
+			std::swap(v[smaller++], v[unclassified++]);
+		} else if(v[unclassified] == pivot){
+			unclassified++;
+		} else {
+			std::swap(v[unclassified], v[larger--]);
+		}
+	}
+}
+
+
+
 int main(){
 
 	int array[] = {3,1,2,5,4,0};
 
 	std::vector<int> v(array, array + 6);
 
-	lambda_sort(v);
+	rearrange(v, 0);
 
 	std::cout << v << std::endl;
 
