@@ -610,11 +610,11 @@ void incre_arb_int(std::vector<int> & v) {
 ** sometimes number iterator is better than pointer iterator***
 
 ->	using std::deque to remove leading zero convenient. However
-	Elements in a deque are not contiguous in memory, and 
+	Elements in a deque are not contiguous in memory, and
 	vector elements are guaranteed to be.
 */
 
-std::deque<int> mult_arb_int (std::vector<int> v1, std::vector<int> v2){
+std::deque<int> mult_arb_int (std::vector<int> v1, std::vector<int> v2) {
 
 	std::deque<int> res(v1.size() + v2.size(), 0);
 
@@ -623,9 +623,9 @@ std::deque<int> mult_arb_int (std::vector<int> v1, std::vector<int> v2){
 	v1[0] = abs(v1[0]);
 	v2[0] = abs(v2[0]);
 
-	for(int i = v1.size() - 1; i >= 0; --i){
+	for (int i = v1.size() - 1; i >= 0; --i) {
 
-		for(int j = v2.size() - 1; j >= 0; --j){
+		for (int j = v2.size() - 1; j >= 0; --j) {
 
 			res[i + j + 1] += v1[i] * v2[j];
 			res[i + j] += res[i + j + 1] / 10;
@@ -633,7 +633,7 @@ std::deque<int> mult_arb_int (std::vector<int> v1, std::vector<int> v2){
 		}
 	}
 
-	for (auto i = res.begin(); *i == 0; ++i){
+	for (auto i = res.begin(); *i == 0; ++i) {
 		res.pop_front();
 	}
 
@@ -644,18 +644,61 @@ std::deque<int> mult_arb_int (std::vector<int> v1, std::vector<int> v2){
 
 /******* 6.4 Advancing through an array *******/
 
+/*
+
+From begin advancing to last, the ith entry is the most steps
+of advancing steps from i
+
+1) Try from the end, back to end. Greedy Algorithm.
+*/
+
+bool advancing(std::vector<int> & v) {
+
+	bool res = true;
+	int idx = v.size() - 1;
+	for (int i = v.size() - 1; i >= 0; --i) {
+		if  (v[i] >= idx - i) {
+			idx = i;
+			res = true;
+		} else {
+			res = false;
+		}
+	}
+	return res;
+}
+
+/******* 6.5 Del Duplicates from sorted array *******/
+
+/*
+<1,1,2,3,7,7,7> -> <1,2,3,7,0,0,0>. O(N) time and O(1) space
+*/
+
+int del_dup_sorted(std::vector<int> &v) {
+	
+	int res = 0;
+
+	for (auto it = v.begin() + 1; it != v.end(); ++it) {
+
+		if (v[res] != *it) v[++res] = *it;
+
+		if (res != it - v.begin()) *it = 0;
+
+	}
+	return res + 1;
+}
+
 
 int main() {
 
-	int array1[] = {1,9,3,7,0,7,7,2,1};
-	int array2[] = {-7,6,1,8,3,8,2,5,7,2,8,7};
+	int array1[] = {1, 2};
+	//int array2[] = {-7,6,1,8,3,8,2,5,7,2,8,7};
 
-	std::vector<int> v1(array1, array1 + 9);
-	std::vector<int> v2(array2, array2 + 12);
+	std::vector<int> v1(array1, array1 + 2);
+	//std::vector<int> v2(array2, array2 + 12);
 
-	
+	int i = del_dup_sorted(v1);
 
-	std::cout << mult_arb_int(v1,v2) << std::endl;
+	std::cout << v1 << " " << i << std::endl;
 
 	return 0;
 }

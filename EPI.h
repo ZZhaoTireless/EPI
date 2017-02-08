@@ -22,7 +22,6 @@ std::ostream& operator<<(std::ostream& stream, const std::vector<T>& values)
 {
 	stream << "[ ";
 	copy( begin(values), end(values), std::ostream_iterator<T>(stream, " ") );
-	stream << ',';
 	stream << ']';
 	return stream;
 }
