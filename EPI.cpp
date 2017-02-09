@@ -699,8 +699,8 @@ int max_stock_diff(std::vector<int> & v) {
 	int max_profit = 0;
 
 	for (int i = 0; i < v.size(); ++i) {
-		
-		if(min_price_so_far > v[i]) min_price_so_far = v[i];
+
+		if (min_price_so_far > v[i]) min_price_so_far = v[i];
 		max_profit = std::max(max_profit, v[i] - min_price_so_far);
 	}
 	return max_profit;
@@ -744,15 +744,50 @@ int max_stock_two(std::vector<int> &v) {
 }
 
 
+/******* 6.8 Enumerate all primes to N*******/
+
+/*
+Sieve of Eratosthenes (error-'tall-thi-nis) :)
+
+Sieve of Eratosthenes:
+->	time complexity: O(N * loglog(N))
+->	space complexity in bit O(sqrt(N)),
+	where each number has log(N) digits on average.
+->	space complexity in number O(sqrt(N) / log(N))
+*/
+
+std::vector<int> primer_array(int N) {
+
+	std::vector<short> v(N + 1, 1);
+	v[0] = 0;
+	v[1] = 0;
+	for (int i = 2; i < ceil(std::sqrt(N)); ++i) {
+		if (v[i]) {
+			for (int j = i * i; j <= N; j += i) {
+				v[j] = 0;
+			}
+		}
+	}
+
+	std::vector<int> res;
+	for(int i = 0; i < N; ++i){
+		if(v[i]) res.push_back(i);
+	}
+
+	return res;
+}
+
+
+
 int main() {
 
-	int array1[] = {12, 11, 13, 9, 12, 8, 14, 13, 15};
+	//int array1[] = {12, 11, 13, 9, 12, 8, 14, 13, 15};
 	//int array2[] = {-7,6,1,8,3,8,2,5,7,2,8,7};
 
-	std::vector<int> v1(array1, array1 + 9);
+	//std::vector<int> v1(array1, array1 + 9);
 	//std::vector<int> v2(array2, array2 + 12);
 
-	std::cout << max_stock_diff(v1) << std::endl;
+	std::cout << primer_array(20) << std::endl;
 
 	return 0;
 }
