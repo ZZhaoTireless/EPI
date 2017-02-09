@@ -674,7 +674,7 @@ bool advancing(std::vector<int> & v) {
 */
 
 int del_dup_sorted(std::vector<int> &v) {
-	
+
 	int res = 0;
 
 	for (auto it = v.begin() + 1; it != v.end(); ++it) {
@@ -687,18 +687,93 @@ int del_dup_sorted(std::vector<int> &v) {
 	return res + 1;
 }
 
+/******* 6.6 Buy and sell a stock once*******/
+
+/*
+the minimum may appear after the maximum
+*/
+
+int max_stock_diff(std::vector<int> & v) {
+
+	int min_idx = 0;
+	int max_idx = v.size() - 1;
+
+	for (int i = 0, j = v.size() - 1; i < v.size() && j > 0; ++i, --j) {
+
+		if ( j > i) {
+			// If there is any value less than current minimum
+			if (v[i] < v[min_idx]) min_idx = i;
+			// If there is any value larger than current maximum
+			if (v[j] > v[max_idx]) max_idx = j;
+
+			// Should make sense 
+		} else {
+			break;
+		}
+	}
+	// If the stock continuous decreasing, then return 0
+	return v[max_idx] - v[min_idx] > 0 ? v[max_idx] - v[min_idx] : 0;
+}
+
+/******* 6.7 Buy and sell a stock Twice*******/
+
+/*
+The second buy must go after the first sale
+*/
+
+// Modify above function to accept two iterator as parameters, and
+// we could use this as O(N^2) time complxity with O(1) space.
+int max_stock_diff
+(std::vector<int> &v, std::vector<int>::iterator start, std::vector<int>::iterator end) {
+
+	int min_idx = start - v.begin();
+	int max_idx = end - v.begin() - 1;
+
+	for (int i = min_idx, j = max_idx; i < end - v.begin() && j > start - v.begin(); ++i, --j) {
+
+		if ( j > i) {
+			// If there is any value less than current minimum
+			if (v[i] < v[min_idx]) min_idx = i;
+			// If there is any value larger than current maximum
+			if (v[j] > v[max_idx]) max_idx = j;
+
+			// Should make sense 
+		} else {
+			break;
+		}
+	}
+	// If the stock continuous decreasing, then return 0
+	return v[max_idx] - v[min_idx] > 0 ? v[max_idx] - v[min_idx] : 0;
+}
+
+int max_stock_two(std::vector<int> &v){
+
+	int max_val = 0;
+	for(auto i = v.begin(); i != v.end(); ++i){
+
+		int sum = max_stock_diff(v, v.begin(), i) + max_stock_diff(v, i, v.end());
+		
+		if(sum > max_val) max_val = sum;
+	}
+
+	return max_val;
+}
+
+// We could also have a O(N) time complexity and O(N) space approach
+int impv_max_stock_two(std::vector<int> &v){
+	
+}
+
 
 int main() {
 
-	int array1[] = {1, 2};
+	int array1[] = {310, 315, 275, 295, 260, 270, 290, 230, 255, 250};
 	//int array2[] = {-7,6,1,8,3,8,2,5,7,2,8,7};
 
-	std::vector<int> v1(array1, array1 + 2);
+	std::vector<int> v1(array1, array1 + 10);
 	//std::vector<int> v2(array2, array2 + 12);
 
-	int i = del_dup_sorted(v1);
-
-	std::cout << v1 << " " << i << std::endl;
+	std::cout << max_stock_two(v1) << std::endl;
 
 	return 0;
 }
