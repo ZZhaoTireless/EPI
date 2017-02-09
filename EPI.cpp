@@ -695,85 +695,64 @@ the minimum may appear after the maximum
 
 int max_stock_diff(std::vector<int> & v) {
 
-	int min_idx = 0;
-	int max_idx = v.size() - 1;
+	int min_price_so_far = std::numeric_limits<int>::max();
+	int max_profit = 0;
 
-	for (int i = 0, j = v.size() - 1; i < v.size() && j > 0; ++i, --j) {
-
-		if ( j > i) {
-			// If there is any value less than current minimum
-			if (v[i] < v[min_idx]) min_idx = i;
-			// If there is any value larger than current maximum
-			if (v[j] > v[max_idx]) max_idx = j;
-
-			// Should make sense 
-		} else {
-			break;
-		}
+	for (int i = 0; i < v.size(); ++i) {
+		
+		if(min_price_so_far > v[i]) min_price_so_far = v[i];
+		max_profit = std::max(max_profit, v[i] - min_price_so_far);
 	}
-	// If the stock continuous decreasing, then return 0
-	return v[max_idx] - v[min_idx] > 0 ? v[max_idx] - v[min_idx] : 0;
+	return max_profit;
 }
 
 /******* 6.7 Buy and sell a stock Twice*******/
 
+// We could have a O(N) time complexity and O(N) space approach
+
 /*
-The second buy must go after the first sale
+The idea is we create two Array to store the maximum the profit
+A = max_profit in range(1 -> i) on ith position
+B = max_profit in range(i -> n) on ith position
+where 0 <= i <= n.
+
+Then sum A and B one-by-one to get the maximum value.
 */
+int max_stock_two(std::vector<int> &v) {
 
-// Modify above function to accept two iterator as parameters, and
-// we could use this as O(N^2) time complxity with O(1) space.
-int max_stock_diff
-(std::vector<int> &v, std::vector<int>::iterator start, std::vector<int>::iterator end) {
+	std::vector<int> trade;
 
-	int min_idx = start - v.begin();
-	int max_idx = end - v.begin() - 1;
+	int min_price_so_far = std::numeric_limits<int>::max();
+	int max_profit = 0, max_price_so_far = 0, max_sum = 0;
 
-	for (int i = min_idx, j = max_idx; i < end - v.begin() && j > start - v.begin(); ++i, --j) {
-
-		if ( j > i) {
-			// If there is any value less than current minimum
-			if (v[i] < v[min_idx]) min_idx = i;
-			// If there is any value larger than current maximum
-			if (v[j] > v[max_idx]) max_idx = j;
-
-			// Should make sense 
-		} else {
-			break;
-		}
+	for (int i  = 0; i < v.size(); ++i) {
+		if ( min_price_so_far > v[i]) min_price_so_far = v[i];
+		max_profit = std::max(max_profit, v[i] - min_price_so_far);
+		trade.push_back(max_profit);
 	}
-	// If the stock continuous decreasing, then return 0
-	return v[max_idx] - v[min_idx] > 0 ? v[max_idx] - v[min_idx] : 0;
-}
+	max_profit = 0;
 
-int max_stock_two(std::vector<int> &v){
+	for (int i = v.size() - 1; i > 0; --i) {
+		if (max_price_so_far < v[i]) max_price_so_far = v[i];
+		max_profit = std::max(max_profit, max_price_so_far - v[i]);
+		trade[i] += max_profit;
 
-	int max_val = 0;
-	for(auto i = v.begin(); i != v.end(); ++i){
-
-		int sum = max_stock_diff(v, v.begin(), i) + max_stock_diff(v, i, v.end());
-		
-		if(sum > max_val) max_val = sum;
+		max_sum = trade[i] > max_sum ? trade[i] : max_sum;
 	}
 
-	return max_val;
-}
-
-// We could also have a O(N) time complexity and O(N) space approach
-int impv_max_stock_two(std::vector<int> &v){
-	
+	return max_sum;
 }
 
 
 int main() {
 
-	int array1[] = {310, 315, 275, 295, 260, 270, 290, 230, 255, 250};
+	int array1[] = {12, 11, 13, 9, 12, 8, 14, 13, 15};
 	//int array2[] = {-7,6,1,8,3,8,2,5,7,2,8,7};
 
-	std::vector<int> v1(array1, array1 + 10);
+	std::vector<int> v1(array1, array1 + 9);
 	//std::vector<int> v2(array2, array2 + 12);
 
-	std::cout << max_stock_two(v1) << std::endl;
+	std::cout << max_stock_diff(v1) << std::endl;
 
 	return 0;
 }

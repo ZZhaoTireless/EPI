@@ -2,7 +2,6 @@
 #define EPI_H
 
 #include <iostream>
-#include <stdlib.h>
 #include <string>
 
 #include <bitset>
