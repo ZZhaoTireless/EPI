@@ -7,7 +7,7 @@
 #include <bitset>
 #include <time.h>
 #include <limits>
-#include <math.h>
+#include <cmath>
 #include <vector>
 #include <deque>
 #include <iterator>
