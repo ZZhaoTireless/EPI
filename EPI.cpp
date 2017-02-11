@@ -770,24 +770,125 @@ std::vector<int> primer_array(int N) {
 	}
 
 	std::vector<int> res;
-	for(int i = 0; i < N; ++i){
-		if(v[i]) res.push_back(i);
+	for (int i = 0; i < N; ++i) {
+		if (v[i]) res.push_back(i);
 	}
 
 	return res;
+}
+
+/******* 6.9 Permute the elements of an array*******/
+
+/*
+<2,0,1,3> & <a,b,c,d> -> <b,c,a,d>
+
+2:0th in <2,0,1,3> -> 0:a to 2th
+0:1th in <2,0,1,3> -> 1:b to 0th
+1:2th in <2,0,1,3> -> 2:c to 1th
+3:3th in <2,0,1,3> -> 3:d unchanged
+
+->	std::list: unlike other standard sequence containers,
+	list and forward_list objects are spectifically designed
+	to be efficient inserting and removing elements in any
+	position, even in the middle of the sequence.
+*/
+
+std::vector<char> permute(std::vector<char> &v, std::vector<int> &p) {
+	std::vector<char> res(v.size(), 0);
+
+	for (int i = 0; i < v.size(); ++i) {
+		res[p[i]] = v[i];
+	}
+
+	return res;
+}
+
+//	Improve, we don't want to use O(N) extra space
+//	Using O(1) instead
+
+// 	The idea is there are some cycles in one permutation.
+//	Loop the list to handle all cycles.
+
+std::vector<char> permute_impv(std::vector<char> &v, std::vector<int> &p) {
+
+	for (int i = 0; i < p.size(); ++i) {
+
+		int next = i;
+
+		while(p[next] >= 0){
+
+			int tmp = p[next];
+
+			std::swap(v[i], v[p[next]]);
+
+			p[next] -= p.size();
+
+			next = tmp;
+		}
+	}
+
+	//	restore the permutation list
+	std::for_each(p.begin(), p.end(), [&, p](int x){x += p.size();});
+	return v;
+}
+/* 	C++11 Lambda
+	[ ] -> what value you want to be captured in lambda function
+		-> [xx] 	pass variable
+		-> [&xx] 	pass by reference
+		-> [&, xx] 	default passing by reference
+		-> [=, &xx]	default passing by value, but passing xx by reference
+	( ) -> variables as elements in iteration
+	{ } -> lambda function definition
+*/
+
+/******* 6.10 Compute the next permutation*******/
+
+/*
+This problem is tricky.
+
+->	<1,4,6,5,3,2> -> find <6,5,3,2>
+
+-> 	find <4>, swap with <5> in <6,5,3,2> since 5 is the smallest
+	element that is larger than 4
+
+-> 	now we have <1,5,6,4,3,2>
+
+->	we revers <6,4,3,2> to get <1,5,2,3,4,6> that is what we need
+
+-> 	using reverse because after swap the sublist guarantee to decreasing order
+*/
+
+std::vector<int> next_permt(std::vector<int> &v){
+
+	for(auto it = v.rbegin(); it + 1 != v.rend(); ++it){
+
+		if(*(it + 1) < *it){
+			std::swap(*(it + 1), 
+				*std::find_if(v.rbegin(), v.rend(),
+					[&, it](int & x){return x > *(it + 1);}));
+
+			std::reverse(v.begin() - (it - v.rend()) - 1, v.end());
+
+			// r_it - v.rend + 1 is the negative value of its index
+			
+			return v;
+		}
+	}
+
+	return v;
 }
 
 
 
 int main() {
 
-	//int array1[] = {12, 11, 13, 9, 12, 8, 14, 13, 15};
-	//int array2[] = {-7,6,1,8,3,8,2,5,7,2,8,7};
+	int array1[] = {1,0,3,2};
+	int array2[] = {6,2,1,5,4,3,0};
 
-	//std::vector<int> v1(array1, array1 + 9);
-	//std::vector<int> v2(array2, array2 + 12);
+	std::vector<int> v1(array1, array1 + 4);
+	std::vector<int> v2(array2, array2 + 7);
 
-	std::cout << primer_array(20) << std::endl;
+	std::cout << next_permt(v2) << std::endl;
 
 	return 0;
 }

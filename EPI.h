@@ -11,6 +11,7 @@
 #include <vector>
 #include <deque>
 #include <iterator>
+#include <list>
 
 #include <algorithm>
 
@@ -27,6 +28,15 @@ std::ostream& operator<<(std::ostream& stream, const std::vector<T>& values)
 
 template<class T>
 std::ostream& operator<<(std::ostream& stream, const std::deque<T>& values)
+{
+	stream << "[ ";
+	copy( begin(values), end(values), std::ostream_iterator<T>(stream, " ") );
+	stream << ']';
+	return stream;
+}
+
+template<class T>
+std::ostream& operator<<(std::ostream& stream, const std::list<T>& values)
 {
 	stream << "[ ";
 	copy( begin(values), end(values), std::ostream_iterator<T>(stream, " ") );
