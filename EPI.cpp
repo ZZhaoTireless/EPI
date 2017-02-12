@@ -815,7 +815,7 @@ std::vector<char> permute_impv(std::vector<char> &v, std::vector<int> &p) {
 
 		int next = i;
 
-		while(p[next] >= 0){
+		while (p[next] >= 0) {
 
 			int tmp = p[next];
 
@@ -828,7 +828,7 @@ std::vector<char> permute_impv(std::vector<char> &v, std::vector<int> &p) {
 	}
 
 	//	restore the permutation list
-	std::for_each(p.begin(), p.end(), [&, p](int x){x += p.size();});
+	std::for_each(p.begin(), p.end(), [&, p](int x) {x += p.size();});
 	return v;
 }
 /* 	C++11 Lambda
@@ -858,19 +858,19 @@ This problem is tricky.
 -> 	using reverse because after swap the sublist guarantee to decreasing order
 */
 
-std::vector<int> next_permt(std::vector<int> &v){
+std::vector<int> next_permt(std::vector<int> &v) {
 
-	for(auto it = v.rbegin(); it + 1 != v.rend(); ++it){
+	for (auto it = v.rbegin(); it + 1 != v.rend(); ++it) {
 
-		if(*(it + 1) < *it){
-			std::swap(*(it + 1), 
-				*std::find_if(v.rbegin(), v.rend(),
-					[&, it](int & x){return x > *(it + 1);}));
+		if (*(it + 1) < *it) {
+			std::swap(*(it + 1),
+			          *std::find_if(v.rbegin(), v.rend(),
+			[&, it](int & x) {return x > *(it + 1);}));
 
 			std::reverse(v.begin() - (it - v.rend()) - 1, v.end());
 
 			// r_it - v.rend + 1 is the negative value of its index
-			
+
 			return v;
 		}
 	}
@@ -879,16 +879,41 @@ std::vector<int> next_permt(std::vector<int> &v){
 }
 
 
+/******* 6.11 Sample Offline Data*******/
+
+/*
+In the <random> library
+->	std::uniform_int_distribution<int>{a,b} -> int
+->	{min, max}(engin)
+->	min, max must be 'int' but v.size() returns 'unsigned long'
+->	static_cast<type>()
+->	std::default_random_engine seed((std::random_device())())
+*/
+
+std::vector<int> random_subset(std::vector<int> &v, int k) {
+
+	std::default_random_engine seed((std::random_device())());
+
+	for (int i = 0; i < k; ++i) {
+		std::swap(v[0], v[std::uniform_int_distribution<int> {i, static_cast<int>(v.size()) - 1 }(seed)]);
+	}
+
+	return v;
+}
+
+/******* 6.12 Sample Online Data*******/
+
+
 
 int main() {
 
-	int array1[] = {1,0,3,2};
-	int array2[] = {6,2,1,5,4,3,0};
+	int array1[] = {1, 0, 3, 2};
+	int array2[] = {6, 2, 1, 5, 4, 3, 0};
 
 	std::vector<int> v1(array1, array1 + 4);
 	std::vector<int> v2(array2, array2 + 7);
 
-	std::cout << next_permt(v2) << std::endl;
+	std::cout << random_subset(v2, 3) << std::endl;
 
 	return 0;
 }
