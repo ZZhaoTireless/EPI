@@ -892,10 +892,21 @@ In the <random> library
 
 std::vector<int> random_subset(std::vector<int> &v, int k) {
 
-	std::default_random_engine seed((std::random_device())());
+	std::default_random_engine seed(
+			(std::random_device())
+			()
+		);
 
 	for (int i = 0; i < k; ++i) {
-		std::swap(v[0], v[std::uniform_int_distribution<int> {i, static_cast<int>(v.size()) - 1 }(seed)]);
+		std::swap(v[0], // --> swap two element in vector by index
+			v[			// --> another index
+				std::uniform_int_distribution<int> { // --> an integer equally prob
+					i, 								 // --> from i
+					static_cast<int>(v.size()) - 1 	 // --> to this number
+				}
+				(seed)								 // --> under this seed
+			 ]
+		);
 	}
 
 	return v;
