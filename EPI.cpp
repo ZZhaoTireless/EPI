@@ -924,7 +924,7 @@ int main() {
 	std::vector<int> v1(array1, array1 + 4);
 	std::vector<int> v2(array2, array2 + 7);
 
-	std::cout << random_subset(v2, 3) << std::endl;
+	std::cout << "test linux bash git" << std::endl;
 
 	return 0;
 }
